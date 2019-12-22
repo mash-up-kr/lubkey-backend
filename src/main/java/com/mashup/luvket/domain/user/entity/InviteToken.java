@@ -18,6 +18,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import com.mashup.luvket.domain.constant.status.Status;
+import com.mashup.luvket.domain.exception.ExpiredInviteTokenException;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -61,6 +62,7 @@ public class InviteToken {
 	}
 	
 	public static final int INVITE_TOKEN_LENGTH = 10;
+	public static final int EXPIRE_DAY = 3;
 	
 	public static InviteToken create(User user, String token) {
 		return InviteToken.builder()
@@ -69,4 +71,11 @@ public class InviteToken {
 					.status(Status.OK)
 					.build();
     }
+
+	public void validateExpired() {
+		LocalDateTime expiredTime = createdAt.plusDays(EXPIRE_DAY);
+
+		if (expiredTime.isBefore(LocalDateTime.now()))
+			throw new ExpiredInviteTokenException();
+	}
 }

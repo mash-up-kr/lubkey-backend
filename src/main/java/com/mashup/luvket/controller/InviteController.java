@@ -1,12 +1,16 @@
 package com.mashup.luvket.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mashup.luvket.domain.user.dto.TokenDto;
+import com.mashup.luvket.domain.user.dto.UserDto;
 import com.mashup.luvket.domain.user.service.InviteService;
 import com.mashup.luvket.model.LuvketResponse;
 
@@ -20,11 +24,27 @@ public class InviteController {
 	private final InviteService inviteService;
 
 	@PostMapping("/")
-	public LuvketResponse<TokenDto> createUserHashCode(@RequestHeader(value = "uid") String uid) {
-		return LuvketResponse.<TokenDto>builder()
+	public ResponseEntity<LuvketResponse<TokenDto>> createInviteToken(@RequestHeader(value = "uid") String uid) {
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(LuvketResponse.<TokenDto>builder()
 					.code(HttpStatus.OK.value())
 					.message("초대 토큰 생성 성공")
 					.data(inviteService.createInviteToken(uid))
-					.build();
+					.build());
+	}
+
+	@GetMapping("/{token}")
+	public ResponseEntity<LuvketResponse<UserDto>> getInvitingUser(@RequestHeader(value = "uid") String uid,
+			@PathVariable(value = "token") String token) {
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(LuvketResponse.<UserDto>builder()
+						.code(HttpStatus.OK.value())
+						.message("초대한 사용자 정보")
+						.data(inviteService.getInvitingUser(token))
+						.build());
 	}
 }
