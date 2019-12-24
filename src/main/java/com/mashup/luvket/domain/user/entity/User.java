@@ -15,7 +15,11 @@ import javax.persistence.Table;
 import com.mashup.luvket.domain.constant.AuthType;
 import com.mashup.luvket.domain.constant.status.UserStatus;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @EqualsAndHashCode(of = "uid")
@@ -26,14 +30,13 @@ import lombok.*;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	private String uid;
 	private String email;
 	private String name;
 	private String profileImageUrl;
 	@Enumerated(EnumType.STRING)
 	private AuthType authType;
+	private String hash;
 	@Enumerated(EnumType.STRING)
 	private UserStatus status;
 
@@ -52,16 +55,4 @@ public class User {
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	@Builder
-	public User(String uid, String email, String name, String profileImageUrl){
-		this.uid = uid;
-		this.email = email;
-		this.name = name;
-		this.profileImageUrl = profileImageUrl;
-	}
-
-	public void update(String name, String profileImageUrl){
-		this.name = name;
-		this.profileImageUrl = profileImageUrl;
-	}
 }
