@@ -6,6 +6,8 @@ build/
 !**/src/test/**
 /bin
 
+aws.yml
+
 ### STS ###
 .apt_generated
 .classpath
