@@ -1,19 +1,22 @@
-package com.mashup.luvket.domain.luvket.entity;
+package com.mashup.luvket.domain.user.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import com.mashup.luvket.domain.constant.status.Status;
+import com.mashup.luvket.domain.constant.status.UserToUserStatus;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,33 +24,31 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
 @Builder(access = AccessLevel.PRIVATE)
-@Table(name = "luvkets")
-public class Luvket {
-
+@Entity
+@Table(name = "user_to_user")
+public class UserToUser {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Long userId;
-	private String title;
-	private String memo;
-	private String location;
-	private Long categoryId;
-	@Enumerated(EnumType.STRING)
-	private Status status;
-	@Column(name = "is_public_open")
-	private boolean publicOpen;
-	private Long scheduleId;
-
+	@JoinColumn(name = "from_user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @OneToOne(fetch = FetchType.LAZY)
+	private User fromUser;
+	@JoinColumn(name = "to_user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @OneToOne(fetch = FetchType.LAZY)
+	private User toUser;
+	private UserToUserStatus status;
+	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-
+	
 	@PrePersist
 	private void onInit() {
 		LocalDateTime now = LocalDateTime.now();
@@ -60,11 +61,16 @@ public class Luvket {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
-	public static Luvket create(String title, String memo) {
-		return Luvket.builder()
-			.title(title)
-			.memo(memo)
-			.build();
+	public static UserToUser create(User fromUser) {
+		return UserToUser.builder()
+				.fromUser(fromUser)
+				.status(UserToUserStatus.WAITING)
+				.build();
+	}
+	
+	public void accept(User toUser) {
+		this.toUser = toUser;
+		this.status = UserToUserStatus.CONNECTING;
 	}
 
 }
