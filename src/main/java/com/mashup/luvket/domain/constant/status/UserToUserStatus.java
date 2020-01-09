@@ -5,13 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum UserStatus {
+public enum UserToUserStatus {
 	
-	ALONE("혼자"),
-	INVITING("초대중"),
-	INVITED("초대완료"),
-	ACCEPTED("수락완료"),
-	DELETE("삭제");
+	WAITING("대기중"),
+	CONNECTING("연결");
 
 	private String description;
 

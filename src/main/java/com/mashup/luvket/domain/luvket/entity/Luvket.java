@@ -17,6 +17,7 @@ import com.mashup.luvket.domain.constant.status.Status;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@Builder(access = AccessLevel.PRIVATE)
 @Table(name = "luvkets")
 public class Luvket {
 
@@ -56,6 +58,13 @@ public class Luvket {
 	@PreUpdate
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
+	}
+	
+	public static Luvket create(String title, String memo) {
+		return Luvket.builder()
+			.title(title)
+			.memo(memo)
+			.build();
 	}
 
 }
