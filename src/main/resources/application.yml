@@ -19,15 +19,3 @@ spring:
       url: jdbc:mysql://localhost:3306/luvket?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
       driver-class-name: com.mysql.cj.jdbc.Driver
-      password: 1234
-
-cloud:
-   aws:
-      s3:
-         bucket: luvket
-         region:
-            static: ap-northeast-2
-         stack:
-            auto: false
-         credentials:
-            instanceProfile: true

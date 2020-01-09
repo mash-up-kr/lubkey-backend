@@ -1,39 +1,42 @@
 package com.mashup.luvket.controller;
 
-import com.mashup.luvket.domain.user.dto.UserSaveDto;
-import com.mashup.luvket.domain.user.dto.UserSaveResponseDto;
-import com.mashup.luvket.domain.user.dto.UserUpdateDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.mashup.luvket.domain.user.dto.TokenDto;
+import com.mashup.luvket.domain.user.entity.User;
 import com.mashup.luvket.domain.user.service.UserService;
 import com.mashup.luvket.model.LuvketResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+	private final UserService userService;
 
-    private final UserService userService;
+//	@PostMapping("/invite")
+//	public LuvketResponse<TokenDto> createUserHashCode(@RequestHeader(value = "uid") String uid) {
+//		return LuvketResponse.<TokenDto>builder()
+//					.code(HttpStatus.OK.value())
+//					.message("초대 토큰 생성 성공")
+//					.data(userService.createToken(uid))
+//					.build();
+//	}
 
-
-    @PostMapping
-    @ResponseBody
-    public LuvketResponse<UserSaveResponseDto> save(@RequestBody UserSaveDto userSaveDto) {
-        return LuvketResponse.<UserSaveResponseDto>builder()
-                .code(HttpStatus.OK.value())
-                .message("사용자 생성 성공")
-                .data(userService.save(userSaveDto))
-                .build();
-    }
-
-    // TODO MultipartFile 받아 S3 저장하기
-    /*@PutMapping("/{id}")
-    @ResponseBody
-    public String saveUserInfo(@PathVariable Long id, @RequestBody UserUpdateDto userUpdateDto) throws IOException {
-        return userService.update(id, userUpdateDto);
-    }*/
+//	@GetMapping("/invite/{inviteToken}")
+//	public void getUserHashCode(@PathVariable(value = "hashCode") String hashCode) {
+//		User user = userService.getUserByToken(hashCode);
+//	}
+//	
+//	@PostMapping("/acceptance")
+//	public void acceptInvite(@RequestHeader(value = "uid") String uid) {
+////		userService.acceptInvite(uid, fromUserId);
+//	}
 }

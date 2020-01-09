@@ -11,5 +11,7 @@ public interface InviteTokenRepository extends JpaRepository<InviteToken, Long> 
 	Optional<InviteToken> findByUserId(Long userId);
 
 	void deleteByUserId(Long userId);
+	
+	Optional<InviteToken> findByToken(String token);
 
 }
