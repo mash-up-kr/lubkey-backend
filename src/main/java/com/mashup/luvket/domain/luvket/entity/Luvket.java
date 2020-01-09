@@ -63,8 +63,17 @@ public class Luvket {
 	public static Luvket create(String title, String memo) {
 		return Luvket.builder()
 			.title(title)
-			.memo(memo)
+//			.memo(memo)
 			.build();
 	}
 
+	@Builder
+	public Luvket(Long userId, String title, Long categoryId, Status status, boolean publicOpen, Long scheduleId){
+		this.userId = userId;
+		this.title = title;
+		this.categoryId = categoryId;
+		this.status = status;
+		this.publicOpen = publicOpen;
+		this.scheduleId = scheduleId;
+	}
 }
