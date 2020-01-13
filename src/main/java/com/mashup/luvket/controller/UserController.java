@@ -1,8 +1,10 @@
 package com.mashup.luvket.controller;
 
+import com.mashup.luvket.domain.user.dto.UserDto;
 import com.mashup.luvket.domain.user.dto.UserSaveDto;
 import com.mashup.luvket.domain.user.dto.UserSaveResponseDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.mashup.luvket.domain.user.dto.TokenDto;
@@ -21,9 +23,14 @@ public class UserController {
 
 
     @PostMapping
-    @ResponseBody
-    public LuvketResponse<UserSaveResponseDto> save(@RequestBody UserSaveDto userSaveDto) {
-        return userService.save(userSaveDto);
+    public ResponseEntity<LuvketResponse<UserSaveResponseDto>> save(@RequestBody UserSaveDto userSaveDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(LuvketResponse.<UserSaveResponseDto>builder()
+                        .code(HttpStatus.OK.value())
+                        .message("사용자 생성 완료")
+                        .data(userService.save(userSaveDto))
+                        .build());
     }
 
 //	@GetMapping("/invite/{inviteToken}")

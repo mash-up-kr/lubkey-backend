@@ -1,5 +1,6 @@
 package com.mashup.luvket.domain.user.service;
 
+import com.mashup.luvket.domain.user.dto.UserDto;
 import com.mashup.luvket.domain.user.dto.UserSaveDto;
 import com.mashup.luvket.domain.user.dto.UserSaveResponseDto;
 import org.springframework.stereotype.Service;
@@ -24,15 +25,11 @@ public class UserService {
 //    private final S3Uploader s3Uploader;
 
     // userId, email, name, profileImageUrl(S3로 넘기지 않음)
-    public LuvketResponse<UserSaveResponseDto> save(UserSaveDto userSaveDto){
+    public UserSaveResponseDto save(UserSaveDto userSaveDto){
 
         User user = userRepository.save(userSaveDto.toEntity());
 
-        return LuvketResponse.<UserSaveResponseDto>builder()
-                .code(HttpStatus.OK.value())
-                .message("사용자 생성 성공")
-                .data(response(user))
-                .build();
+        return new UserSaveResponseDto(user.getId(), user.getName(), user.getProfileImageUrl());
     }
     /*
     // 수정했을 때 url return
@@ -53,12 +50,4 @@ public class UserService {
 	}
         return url;
     }*/
-
-    private UserSaveResponseDto response(User user){
-        return UserSaveResponseDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .profileImageUrl(user.getProfileImageUrl())
-                .build();
-    }
 }
