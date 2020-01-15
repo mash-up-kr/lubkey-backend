@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum Status {
 	
 	OK("정상"),
+	COMPLETE("완료"),
 	DELETE("삭제");
 
 	private String description;

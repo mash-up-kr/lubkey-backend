@@ -35,7 +35,6 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(unique = true)
 	private String uid;
 	private String email;
 	private String name;
@@ -60,4 +59,16 @@ public class User {
 		this.updatedAt = LocalDateTime.now();
 	}
 
+	@Builder
+	public User(String uid, String email, String name, String profileImageUrl){
+		this.uid = uid;
+		this.email = email;
+		this.name = name;
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void update(String name, String profileImageUrl){
+		this.name = name;
+		this.profileImageUrl = profileImageUrl;
+	}
 }
