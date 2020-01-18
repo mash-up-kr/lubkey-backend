@@ -12,8 +12,6 @@ spring:
       database-platform: org.hibernate.dialect.MySQL5Dialect
       hibernate:
          ddl-auto: update
-   jackson:
-      property-naming-strategy: SNAKE_CASE
 
    datasource:
       url: jdbc:mysql://localhost:3306/luvket?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&useSSL=false
