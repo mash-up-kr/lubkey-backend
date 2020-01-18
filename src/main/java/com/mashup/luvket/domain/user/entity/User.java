@@ -2,7 +2,6 @@ package com.mashup.luvket.domain.user.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -60,15 +59,27 @@ public class User {
 	}
 
 	@Builder
-	public User(String uid, String email, String name, String profileImageUrl){
+	public User(String uid, String email, String name, String profileImageUrl) {
 		this.uid = uid;
 		this.email = email;
 		this.name = name;
 		this.profileImageUrl = profileImageUrl;
 	}
 
-	public void update(String name, String profileImageUrl){
+	public void update(String name, String profileImageUrl) {
 		this.name = name;
 		this.profileImageUrl = profileImageUrl;
+	}
+	
+	public boolean isAlone() {
+		return UserStatus.ALONE == status;
+	}
+	
+	public void inviting() {
+		status = UserStatus.INVITING;
+	}
+
+	public void accepted() {
+		status = UserStatus.ACCEPTED;
 	}
 }

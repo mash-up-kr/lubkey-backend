@@ -15,7 +15,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import com.mashup.luvket.domain.constant.status.Status;
 import com.mashup.luvket.domain.constant.status.UserToUserStatus;
 
 import lombok.AccessLevel;
@@ -24,7 +23,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @EqualsAndHashCode(of = "id")
@@ -34,21 +32,21 @@ import lombok.Setter;
 @Entity
 @Table(name = "user_to_user")
 public class UserToUser {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@JoinColumn(name = "from_user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    @OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	private User fromUser;
 	@JoinColumn(name = "to_user_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-    @OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	private User toUser;
 	private UserToUserStatus status;
-	
+
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	
+
 	@PrePersist
 	private void onInit() {
 		LocalDateTime now = LocalDateTime.now();
@@ -60,17 +58,13 @@ public class UserToUser {
 	private void preUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
-	
-	public static UserToUser create(User fromUser) {
+
+	public static UserToUser create(User fromUser, User toUser) {
 		return UserToUser.builder()
 				.fromUser(fromUser)
-				.status(UserToUserStatus.WAITING)
+				.toUser(toUser)
+				.status(UserToUserStatus.CONNECTING)
 				.build();
-	}
-	
-	public void accept(User toUser) {
-		this.toUser = toUser;
-		this.status = UserToUserStatus.CONNECTING;
 	}
 
 }
