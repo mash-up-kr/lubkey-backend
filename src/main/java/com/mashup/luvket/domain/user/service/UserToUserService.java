@@ -14,8 +14,8 @@ public class UserToUserService {
 
 	private final UserToUserRepository userToUserRepository;
 
-	public UserToUser create(User fromUser) {
-		UserToUser userToUser = UserToUser.create(fromUser);
+	public UserToUser create(User fromUser, User toUser) {
+		UserToUser userToUser = UserToUser.create(fromUser, toUser);
 
 		userToUserRepository.save(userToUser);
 

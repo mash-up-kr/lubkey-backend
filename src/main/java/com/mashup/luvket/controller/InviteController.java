@@ -23,8 +23,8 @@ public class InviteController {
 
 	private final InviteService inviteService;
 
-	@PostMapping("/")
-	public ResponseEntity<LuvketResponse<TokenDto>> createInviteToken(@RequestHeader(value = "uid") String uid) {
+	@PostMapping("")
+	public ResponseEntity<LuvketResponse<TokenDto>> createInviteToken(@RequestHeader String uid) {
 
 		return ResponseEntity
 				.status(HttpStatus.OK)
@@ -36,8 +36,7 @@ public class InviteController {
 	}
 
 	@GetMapping("/{token}")
-	public ResponseEntity<LuvketResponse<UserDto>> getInvitingUser(@RequestHeader(value = "uid") String uid,
-			@PathVariable(value = "token") String token) {
+	public ResponseEntity<LuvketResponse<UserDto>> getInvitingUser(@PathVariable String token) {
 
 		return ResponseEntity
 				.status(HttpStatus.OK)
@@ -45,6 +44,20 @@ public class InviteController {
 						.code(HttpStatus.OK.value())
 						.message("초대한 사용자 정보")
 						.data(inviteService.getInvitingUser(token))
+						.build());
+	}
+
+	@PostMapping("/{token}/accept")
+	public ResponseEntity<LuvketResponse<Void>> acceptInivte(@RequestHeader String uid,
+			@PathVariable(value = "token") String token) {
+
+		inviteService.acceptInvite(uid, token);
+
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(LuvketResponse.<Void>builder()
+						.code(HttpStatus.CREATED.value())
+						.message("초대 수락 성공")
 						.build());
 	}
 }

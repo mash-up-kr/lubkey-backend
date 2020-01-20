@@ -1,5 +1,6 @@
 package com.mashup.luvket.domain.user.service;
 
+import com.mashup.luvket.domain.exception.NotFoundEntityException;
 import com.mashup.luvket.domain.user.dto.UserDto;
 import com.mashup.luvket.domain.user.dto.UserSaveDto;
 import com.mashup.luvket.domain.user.dto.UserSaveResponseDto;
@@ -50,4 +51,8 @@ public class UserService {
 	}
         return url;
     }*/
+
+    public User getUser(String uid) {
+    	return userRepository.findByUid(uid).orElseThrow(NotFoundEntityException::new);
+    }
 }
