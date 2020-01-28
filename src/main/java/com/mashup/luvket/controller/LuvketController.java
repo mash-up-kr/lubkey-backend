@@ -7,8 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.mashup.luvket.domain.luvket.LuvketPageRequest;
 import com.mashup.luvket.domain.luvket.dto.LuvketCreateDto;
 import com.mashup.luvket.domain.luvket.entity.Luvket;
 import com.mashup.luvket.domain.luvket.repository.LuvketRepository;
@@ -18,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/luvket")
+@RequestMapping("/api/luvkets")
 @RestController
 public class LuvketController {
 
@@ -26,20 +29,25 @@ public class LuvketController {
 
     private final LuvketService luvketService;
 
-	@PostMapping("/")
+	@PostMapping("")
 	public void create(@RequestBody LuvketCreateDto luvketCreateDto) {
 		Luvket luvket = Luvket.create(luvketCreateDto.getTitle(), luvketCreateDto.getMemo());
 
 		luvketRepository.save(luvket);
 	}
 
-    @GetMapping("")
-    public LuvketResponse<List<LuvketDto>> search(@PageableDefault(size = 25)
-                                                  @SortDefault.SortDefaults({
-                                                          @SortDefault(sort = "status", direction = Sort.Direction.DESC),
-                                                          @SortDefault(sort = "createdAt", direction = Sort.Direction.DESC)
-                                                  })
-                                                          Pageable pageable){
-        return luvketService.search(pageable);
-    }
+	@GetMapping("")
+	public ResponseEntity<LuvketResponse<List<LuvketDto>>> search(@RequestHeader String uid,
+			LuvketPageRequest luvketPageRequest) {
+
+		List<LuvketDto> luvkets = luvketService.get(uid, luvketPageRequest);
+
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(LuvketResponse.<List<LuvketDto>>builder()
+						.code(HttpStatus.OK.value())
+						.message("럽킷 목록 조회")
+						.data(luvkets)
+						.build());
+	}
 }

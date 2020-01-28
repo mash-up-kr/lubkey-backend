@@ -1,6 +1,9 @@
 package com.mashup.luvket.domain.user.entity;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -65,6 +68,10 @@ public class UserToUser {
 				.toUser(toUser)
 				.status(UserToUserStatus.CONNECTING)
 				.build();
+	}
+	
+	public Set<Long> getuserIds() {
+		return new HashSet<>(Arrays.asList(fromUser.getId(), toUser.getId()));
 	}
 
 }
