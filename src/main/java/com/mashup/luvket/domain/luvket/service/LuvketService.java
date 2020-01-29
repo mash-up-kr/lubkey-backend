@@ -34,7 +34,7 @@ public class LuvketService {
 		String title = luvketPageRequest.getTitle();
 		Set<Long> categoryIds = luvketPageRequest.getCategoryIds();
 		Status status = luvketPageRequest.getStatus();
-		boolean isPublicOpen = luvketPageRequest.isPublic();
+		boolean isPublicOpen = luvketPageRequest.isPublicOpen();
 
 		// TODO index 추가 필요
 		List<Luvket> luvkets = luvketRepository.findByUserIdInAndTitleStartsWithAndCategoryIdInAndStatusAndPublicOpen(
